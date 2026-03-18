@@ -1,6 +1,5 @@
 "use client";
 
-import type { Category } from "@/db/schema";
 import { HardDriveUpload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, type DragEvent, useRef, useState } from "react";
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { Category } from "@/db/schema";
 import { ALLOWED_DOCUMENT_TYPES, MAX_DOCUMENT_FILE_SIZE } from "@/lib/upload";
 
 type Props = {
@@ -82,7 +82,7 @@ export function UploadResourceCard({ categories }: Props) {
     }
   };
 
-  const onDrop = async (event: DragEvent<HTMLDivElement>) => {
+  const onDrop = async (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];

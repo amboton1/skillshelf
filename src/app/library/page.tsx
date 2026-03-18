@@ -11,7 +11,10 @@ export default async function LibraryPage() {
   return (
     <main className="min-h-[calc(100vh-56px)] bg-[#f4f4f5] py-6 md:py-8">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <LibraryGrid resources={publishedResources} bookmarkedIds={bookmarkedIds} />
+        <LibraryGrid
+          resources={publishedResources}
+          bookmarkedIds={bookmarkedIds}
+        />
       </div>
     </main>
   );

@@ -1,6 +1,13 @@
 "use client";
 
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import type { getAnalyticsData } from "@/lib/data/resources";
 
 type AnalyticsData = NonNullable<Awaited<ReturnType<typeof getAnalyticsData>>>;
@@ -42,7 +49,11 @@ function ChartCard({
   );
 }
 
-export function LikesByResourceChart({ data }: { data: AnalyticsData["likesByResource"] }) {
+export function LikesByResourceChart({
+  data,
+}: {
+  data: AnalyticsData["likesByResource"];
+}) {
   return (
     <ChartCard title="Likes by resource" description="Engagement">
       {data.length === 0 ? (
@@ -61,16 +72,26 @@ export function LikesByResourceChart({ data }: { data: AnalyticsData["likesByRes
               paddingAngle={3}
             >
               {data.map((_, i) => (
-                <Cell fill={PALETTE[i % PALETTE.length]} key={i} stroke="transparent" />
+                <Cell
+                  fill={PALETTE[i % PALETTE.length]}
+                  key={i}
+                  stroke="transparent"
+                />
               ))}
             </Pie>
             <Tooltip
-              contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+                fontSize: 13,
+              }}
               formatter={(value) => [value, ""]}
             />
             <Legend
               formatter={(value) =>
-                String(value).length > 20 ? `${String(value).slice(0, 20)}…` : value
+                String(value).length > 20
+                  ? `${String(value).slice(0, 20)}…`
+                  : value
               }
               iconSize={10}
               iconType="circle"
@@ -83,7 +104,11 @@ export function LikesByResourceChart({ data }: { data: AnalyticsData["likesByRes
   );
 }
 
-export function CategoryBreakdownChart({ data }: { data: AnalyticsData["categoryBreakdown"] }) {
+export function CategoryBreakdownChart({
+  data,
+}: {
+  data: AnalyticsData["categoryBreakdown"];
+}) {
   return (
     <ChartCard title="Resources by category" description="Library composition">
       {data.length === 0 ? (
@@ -101,16 +126,26 @@ export function CategoryBreakdownChart({ data }: { data: AnalyticsData["category
               paddingAngle={3}
             >
               {data.map((_, i) => (
-                <Cell fill={PALETTE[i % PALETTE.length]} key={i} stroke="transparent" />
+                <Cell
+                  fill={PALETTE[i % PALETTE.length]}
+                  key={i}
+                  stroke="transparent"
+                />
               ))}
             </Pie>
             <Tooltip
-              contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+                fontSize: 13,
+              }}
               formatter={(value) => [value, ""]}
             />
             <Legend
               formatter={(value) =>
-                String(value).length > 20 ? `${String(value).slice(0, 20)}…` : value
+                String(value).length > 20
+                  ? `${String(value).slice(0, 20)}…`
+                  : value
               }
               iconSize={10}
               iconType="circle"
@@ -154,7 +189,11 @@ export function PublishedVsDraftChart({
               <Cell fill="#e2e8f0" stroke="transparent" />
             </Pie>
             <Tooltip
-              contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+                fontSize: 13,
+              }}
               formatter={(value) => [value, ""]}
             />
             <Legend
@@ -169,7 +208,11 @@ export function PublishedVsDraftChart({
   );
 }
 
-export function SalesByResourceChart({ data }: { data: AnalyticsData["salesByResource"] }) {
+export function SalesByResourceChart({
+  data,
+}: {
+  data: AnalyticsData["salesByResource"];
+}) {
   return (
     <ChartCard title="Sales by resource" description="Revenue distribution">
       {data.length === 0 ? (
@@ -188,16 +231,26 @@ export function SalesByResourceChart({ data }: { data: AnalyticsData["salesByRes
               paddingAngle={3}
             >
               {data.map((_, i) => (
-                <Cell fill={PALETTE[i % PALETTE.length]} key={i} stroke="transparent" />
+                <Cell
+                  fill={PALETTE[i % PALETTE.length]}
+                  key={i}
+                  stroke="transparent"
+                />
               ))}
             </Pie>
             <Tooltip
-              contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+                fontSize: 13,
+              }}
               formatter={(value) => [value, ""]}
             />
             <Legend
               formatter={(value) =>
-                String(value).length > 20 ? `${String(value).slice(0, 20)}…` : value
+                String(value).length > 20
+                  ? `${String(value).slice(0, 20)}…`
+                  : value
               }
               iconSize={10}
               iconType="circle"

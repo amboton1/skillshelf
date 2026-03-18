@@ -3,7 +3,6 @@
 import {
   ChartColumn,
   FolderOpen,
-  HardDriveUpload,
   LayoutDashboard,
   Settings,
   Star,

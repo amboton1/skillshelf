@@ -36,7 +36,9 @@ export default async function SavedPage() {
 
         {saved.length === 0 ? (
           <div className="rounded-[24px] border border-dashed border-slate-200 bg-slate-50 py-20 text-center space-y-3">
-            <p className="text-sm text-slate-500">You haven&apos;t saved any resources yet.</p>
+            <p className="text-sm text-slate-500">
+              You haven&apos;t saved any resources yet.
+            </p>
             <Button asChild variant="outline" className="rounded-xl">
               <Link href="/library">Browse Library</Link>
             </Button>
