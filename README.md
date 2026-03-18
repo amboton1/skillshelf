@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkillShelf
+
+A resource marketplace platform where creators can share learning materials, and learners can discover and save high-quality resources.
+
+## What It Does
+
+SkillShelf lets users browse, upload, and manage digital learning resources — PDFs, templates, UI kits, code snippets, study guides, and more. Creators get a personal dashboard to track their uploads, monitor performance analytics, and manage earnings. Visitors can explore the public library, bookmark favorites, and access free or paid resources.
+
+## Features
+
+- **Public Library** — Browse published resources by category, view featured picks on the homepage
+- **Creator Dashboard** — Upload resources (auto-hosted via Vercel Blob), manage listings, and track stats (total resources, likes, earnings)
+- **Analytics** — Charts showing likes over time, sales data, and category distribution
+- **Bookmarks** — Save resources to a personal collection for quick access
+- **Likes & Reviews** — Community engagement on each resource
+- **Email Notifications** — Upload confirmation emails via Resend
+
+## Tech Stack
+
+- **Framework**: Next.js (App Router) + React 19
+- **Database**: PostgreSQL (Neon Serverless) + Drizzle ORM
+- **Auth**: Stack Auth
+- **Storage**: Vercel Blob
+- **UI**: Shadcn UI + Radix UI + Tailwind CSS
+- **Charts**: Recharts
+- **Email**: Resend
+- **Language**: TypeScript
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file with the following:
 
-## Learn More
+```env
+# Database
+DATABASE_URL=
 
-To learn more about Next.js, take a look at the following resources:
+# Stack Auth
+NEXT_PUBLIC_STACK_PROJECT_ID=
+NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=
+STACK_SECRET_SERVER_KEY=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Vercel Blob
+BLOB_READ_WRITE_TOKEN=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Resend
+RESEND_API_KEY=
+```
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/
+│   ├── page.tsx              # Homepage
+│   ├── library/              # Public resource browser
+│   ├── dashboard/            # Creator dashboard (auth required)
+│   │   ├── my-resources/     # Manage own resources
+│   │   └── analytics/        # Performance charts
+│   ├── saved/                # Bookmarked resources
+│   └── api/                  # API routes (upload, bookmarks)
+├── components/               # Reusable UI components
+├── db/                       # Drizzle schema and client
+└── lib/                      # Utilities and helpers
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Deploy instantly on [Vercel](https://vercel.com). Set the environment variables in your project settings and connect your Neon database.
