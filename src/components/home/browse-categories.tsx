@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import type { Category as DBCategory } from "@/db/schema";
 
-interface Category extends DBCategory {
+export interface Category extends DBCategory {
   title: string;
   description: string;
   Icon: LucideIcon;
