@@ -15,6 +15,13 @@
       "when": 1773149288809,
       "tag": "0001_happy_spirit",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773834742321,
+      "tag": "0002_violet_microchip",
+      "breakpoints": true
     }
   ]
 }

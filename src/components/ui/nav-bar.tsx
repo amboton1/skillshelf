@@ -1,6 +1,6 @@
+import { UserButton } from "@stackframe/stack";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { UserButton } from "@stackframe/stack";
 import { stackServerApp } from "@/stack/server";
 
 export async function NavBar() {
@@ -60,7 +60,7 @@ export async function NavBar() {
 
         <div className="flex items-center gap-5 ml-auto shrink-0">
           <Link
-            href="#"
+            href="/dashboard"
             className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
           >
             Browse

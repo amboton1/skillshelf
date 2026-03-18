@@ -15,7 +15,6 @@ interface Category extends DBCategory {
   Icon: LucideIcon;
 }
 
-// Map database categories to UI categories with icons and descriptions
 const getCategoryConfig = (name: string) => {
   const config: Record<string, { Icon: LucideIcon; description: string }> = {
     "UI Kits": {

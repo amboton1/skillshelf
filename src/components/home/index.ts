@@ -1,7 +1,7 @@
+export type { Resource } from "@/db/schema";
 export type { Category } from "./browse-categories";
 export { BrowseCategories } from "./browse-categories";
 export { CtaSection } from "./cta-section";
-export type { Resource } from "@/db/schema";
 export { FeaturedResources } from "./featured-resources";
 export type { FooterColumn } from "./footer-section";
 export { FooterSection } from "./footer-section";

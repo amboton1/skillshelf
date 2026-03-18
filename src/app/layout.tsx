@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackClientApp } from "../stack/client";
+import type { Metadata } from "next";
 import { Ubuntu_Mono } from "next/font/google";
 import NavBar from "@/components/ui/nav-bar";
 import { syncUser } from "@/lib/auth/sync-user";
+import { stackClientApp } from "../stack/client";
 import "./globals.css";
 
 const ubuntuMono = Ubuntu_Mono({

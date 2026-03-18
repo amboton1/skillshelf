@@ -1,6 +1,6 @@
+import { sql } from "drizzle-orm";
 import db from "@/db";
 import { categories, resources } from "@/db/schema";
-import { sql } from "drizzle-orm";
 
 export async function getCategories() {
   return await db

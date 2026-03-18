@@ -1,11 +1,11 @@
 import {
+  boolean,
+  integer,
+  numeric,
   pgTable,
   text,
   timestamp,
-  boolean,
   uuid,
-  numeric,
-  integer,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -86,6 +86,17 @@ export const resourceLikes = pgTable("resource_likes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const bookmarks = pgTable("bookmarks", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  resourceId: uuid("resource_id")
+    .notNull()
+    .references(() => resources.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const emailLogs = pgTable("email_logs", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id),
@@ -118,6 +129,9 @@ export type NewReview = typeof reviews.$inferInsert;
 export type ResourceLike = typeof resourceLikes.$inferSelect;
 export type NewResourceLike = typeof resourceLikes.$inferInsert;
 
+export type Bookmark = typeof bookmarks.$inferSelect;
+export type NewBookmark = typeof bookmarks.$inferInsert;
+
 export type EmailLog = typeof emailLogs.$inferSelect;
 export type NewEmailLog = typeof emailLogs.$inferInsert;
 
@@ -129,6 +143,7 @@ const schema = {
   purchases,
   reviews,
   resourceLikes,
+  bookmarks,
   emailLogs,
 };
 export default schema;
