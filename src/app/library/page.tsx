@@ -4,8 +4,10 @@ import {
   getLikedResourceIds,
   getResources,
 } from "@/lib/data/resources";
+import { stackServerApp } from "@/stack/server";
 
 export default async function LibraryPage() {
+  await stackServerApp.getUser({ or: "redirect" });
   const [allResources, bookmarkedIds, likedIds] = await Promise.all([
     getResources(),
     getBookmarkedResourceIds(),
