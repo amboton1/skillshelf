@@ -66,10 +66,10 @@ export async function NavBar() {
             Browse
           </Link>
           <Link
-            href="#"
+            href="/saved"
             className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
           >
-            Upload
+            Saved
           </Link>
 
           <div className="h-5 w-px bg-gray-300" aria-hidden="true" />

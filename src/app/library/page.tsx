@@ -1,10 +1,15 @@
 import { LibraryGrid } from "@/components/library/library-grid";
-import { getBookmarkedResourceIds, getResources } from "@/lib/data/resources";
+import {
+  getBookmarkedResourceIds,
+  getLikedResourceIds,
+  getResources,
+} from "@/lib/data/resources";
 
 export default async function LibraryPage() {
-  const [allResources, bookmarkedIds] = await Promise.all([
+  const [allResources, bookmarkedIds, likedIds] = await Promise.all([
     getResources(),
     getBookmarkedResourceIds(),
+    getLikedResourceIds(),
   ]);
   const publishedResources = allResources.filter((r) => r.published);
 
@@ -14,6 +19,7 @@ export default async function LibraryPage() {
         <LibraryGrid
           resources={publishedResources}
           bookmarkedIds={bookmarkedIds}
+          likedIds={likedIds}
         />
       </div>
     </main>

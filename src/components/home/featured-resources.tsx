@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -9,18 +11,16 @@ import {
 
 import type { Resource } from "@/db/schema";
 import type { ResourceWithCategory } from "@/lib/data/resources";
+import { useRouter } from "next/navigation";
 
 export type { Resource };
 
 interface FeaturedResourcesProps {
   resources?: ResourceWithCategory[];
-  onViewAll?: () => void;
 }
 
-export function FeaturedResources({
-  resources,
-  onViewAll,
-}: FeaturedResourcesProps) {
+export function FeaturedResources({ resources }: FeaturedResourcesProps) {
+  const router = useRouter();
   const formatPrice = (price: Resource["price"]) => {
     const amount = typeof price === "string" ? Number(price) : price;
 
@@ -68,7 +68,7 @@ export function FeaturedResources({
         </div>
         <button
           type="button"
-          onClick={onViewAll}
+          onClick={() => router.push("/library")}
           className="inline-flex items-center gap-2 text-sm text-[#1f2937] hover:text-black"
         >
           View all

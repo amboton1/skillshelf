@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, Search } from "lucide-react";
+import { Bookmark, Heart, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,7 @@ import type { ResourceWithCategory } from "@/lib/data/resources";
 interface LibraryGridProps {
   resources: ResourceWithCategory[];
   bookmarkedIds: string[];
+  likedIds: string[];
 }
 
 type SortOption =
@@ -35,11 +36,13 @@ type SortOption =
   | "price-desc"
   | "newest";
 
-export function LibraryGrid({ resources, bookmarkedIds }: LibraryGridProps) {
+export function LibraryGrid({ resources, bookmarkedIds, likedIds }: LibraryGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("newest");
   const [saved, setSaved] = useState<Set<string>>(new Set(bookmarkedIds));
   const [pending, setPending] = useState<Set<string>>(new Set());
+  const [liked, setLiked] = useState<Set<string>>(new Set(likedIds));
+  const [likePending, setLikePending] = useState<Set<string>>(new Set());
 
   const filtered = resources
     .filter((r) => r.title.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -61,6 +64,47 @@ export function LibraryGrid({ resources, bookmarkedIds }: LibraryGridProps) {
           return 0;
       }
     });
+
+  async function toggleLike(resourceId: string) {
+    if (likePending.has(resourceId)) return;
+    setLikePending((p) => new Set(p).add(resourceId));
+
+    setLiked((prev) => {
+      const next = new Set(prev);
+      if (next.has(resourceId)) next.delete(resourceId);
+      else next.add(resourceId);
+      return next;
+    });
+
+    try {
+      const res = await fetch("/api/likes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resourceId }),
+      });
+      if (!res.ok) {
+        setLiked((prev) => {
+          const next = new Set(prev);
+          if (next.has(resourceId)) next.delete(resourceId);
+          else next.add(resourceId);
+          return next;
+        });
+      }
+    } catch {
+      setLiked((prev) => {
+        const next = new Set(prev);
+        if (next.has(resourceId)) next.delete(resourceId);
+        else next.add(resourceId);
+        return next;
+      });
+    } finally {
+      setLikePending((p) => {
+        const next = new Set(p);
+        next.delete(resourceId);
+        return next;
+      });
+    }
+  }
 
   async function toggleBookmark(resourceId: string) {
     if (pending.has(resourceId)) return;
@@ -202,6 +246,18 @@ export function LibraryGrid({ resources, bookmarkedIds }: LibraryGridProps) {
                   )}
                 </span>
                 <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleLike(resource.id)}
+                    disabled={likePending.has(resource.id)}
+                    className="rounded-xl p-1.5 text-slate-400 transition hover:text-rose-500 disabled:opacity-50"
+                    aria-label={liked.has(resource.id) ? "Unlike" : "Like"}
+                  >
+                    <Heart
+                      className={`size-4 ${liked.has(resource.id) ? "text-rose-500" : ""}`}
+                      fill={liked.has(resource.id) ? "currentColor" : "none"}
+                    />
+                  </button>
                   <button
                     type="button"
                     onClick={() => toggleBookmark(resource.id)}

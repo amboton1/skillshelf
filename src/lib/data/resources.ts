@@ -251,6 +251,23 @@ export async function getBookmarkedResourceIds(): Promise<string[]> {
   return rows.map((r) => r.resourceId);
 }
 
+export async function getLikedResourceIds(): Promise<string[]> {
+  const user = await stackServerApp.getUser();
+  if (!user) return [];
+
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.stackId, user.id),
+  });
+  if (!dbUser) return [];
+
+  const rows = await db
+    .select({ resourceId: resourceLikes.resourceId })
+    .from(resourceLikes)
+    .where(eq(resourceLikes.userId, dbUser.id));
+
+  return rows.map((r) => r.resourceId);
+}
+
 export async function getSavedResources(): Promise<ResourceWithCategory[]> {
   const user = await stackServerApp.getUser();
   if (!user) return [];
