@@ -4,6 +4,7 @@ import {
   bookmarks,
   categories,
   purchases,
+  resourceFiles,
   resourceLikes,
   resources,
   users,
@@ -13,6 +14,17 @@ import { stackServerApp } from "@/stack/server";
 export type ResourceWithCategory = typeof resources.$inferSelect & {
   category: typeof categories.$inferSelect | null;
 };
+
+async function getDbUser() {
+  const user = await stackServerApp.getUser();
+  if (!user) return null;
+
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.stackId, user.id),
+  });
+
+  return dbUser ?? null;
+}
 
 export async function getResources(): Promise<ResourceWithCategory[]> {
   const result = await db
@@ -30,19 +42,8 @@ export async function getResources(): Promise<ResourceWithCategory[]> {
 }
 
 export async function getUsersResources(): Promise<ResourceWithCategory[]> {
-  const user = await stackServerApp.getUser();
-
-  if (!user) {
-    return [];
-  }
-
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
-
-  if (!dbUser) {
-    return [];
-  }
+  const dbUser = await getDbUser();
+  if (!dbUser) return [];
 
   const result = await db
     .select({
@@ -60,12 +61,7 @@ export async function getUsersResources(): Promise<ResourceWithCategory[]> {
 }
 
 export async function getDashboardStats() {
-  const user = await stackServerApp.getUser();
-  if (!user) return null;
-
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
+  const dbUser = await getDbUser();
   if (!dbUser) return null;
 
   const userResources = await db
@@ -129,12 +125,7 @@ export async function getDashboardStats() {
 }
 
 export async function getAnalyticsData() {
-  const user = await stackServerApp.getUser();
-  if (!user) return null;
-
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
+  const dbUser = await getDbUser();
   if (!dbUser) return null;
 
   const userResources = await db
@@ -234,13 +225,44 @@ export async function getResourceByID(id: string) {
   return resource;
 }
 
-export async function getBookmarkedResourceIds(): Promise<string[]> {
-  const user = await stackServerApp.getUser();
-  if (!user) return [];
+export async function getUserResourceByID(id: string) {
+  const dbUser = await getDbUser();
+  if (!dbUser) return null;
 
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
+  const [result] = await db
+    .select({ resource: resources, category: categories })
+    .from(resources)
+    .leftJoin(categories, eq(resources.categoryId, categories.id))
+    .where(eq(resources.id, id));
+
+  if (!result || result.resource.creatorId !== dbUser.id) return null;
+
+  const files = await db
+    .select()
+    .from(resourceFiles)
+    .where(eq(resourceFiles.resourceId, id));
+
+  const [likesRow] = await db
+    .select({ total: count() })
+    .from(resourceLikes)
+    .where(eq(resourceLikes.resourceId, id));
+
+  const [salesRow] = await db
+    .select({ total: count() })
+    .from(purchases)
+    .where(eq(purchases.resourceId, id));
+
+  return {
+    ...result.resource,
+    category: result.category,
+    files,
+    likes: likesRow?.total ?? 0,
+    sales: salesRow?.total ?? 0,
+  };
+}
+
+export async function getBookmarkedResourceIds(): Promise<string[]> {
+  const dbUser = await getDbUser();
   if (!dbUser) return [];
 
   const rows = await db
@@ -252,12 +274,7 @@ export async function getBookmarkedResourceIds(): Promise<string[]> {
 }
 
 export async function getLikedResourceIds(): Promise<string[]> {
-  const user = await stackServerApp.getUser();
-  if (!user) return [];
-
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
+  const dbUser = await getDbUser();
   if (!dbUser) return [];
 
   const rows = await db
@@ -269,12 +286,7 @@ export async function getLikedResourceIds(): Promise<string[]> {
 }
 
 export async function getSavedResources(): Promise<ResourceWithCategory[]> {
-  const user = await stackServerApp.getUser();
-  if (!user) return [];
-
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.stackId, user.id),
-  });
+  const dbUser = await getDbUser();
   if (!dbUser) return [];
 
   const bookmarkRows = await db

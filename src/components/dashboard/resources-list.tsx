@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +52,7 @@ export function ResourcesList({ userResources }: ResourcesListProps) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4 px-6 md:px-7">
+      <CardContent className="max-h-[650px] overflow-y-auto space-y-4 px-6 md:px-7">
         {userResources.length > 0 ? (
           filteredResources.map((resource) => (
             <div
@@ -74,8 +75,15 @@ export function ResourcesList({ userResources }: ResourcesListProps) {
                 <span className="text-sm text-slate-600">
                   {resource.price === "0.00" ? "Free" : `$${resource.price}`}
                 </span>
-                <Button className="rounded-xl" size="sm" variant="outline">
-                  Manage
+                <Button
+                  asChild
+                  className="rounded-xl"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Link href={`/dashboard/my-resources/${resource.id}`}>
+                    View
+                  </Link>
                 </Button>
               </div>
             </div>

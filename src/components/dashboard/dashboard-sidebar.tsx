@@ -9,13 +9,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const sidebarItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/dashboard" },
@@ -25,7 +18,7 @@ const sidebarItems = [
   { label: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
-const quickActions = [
+const _quickActions = [
   "Upload a new resource",
   "Edit resource details",
   "Browse the library",
@@ -71,29 +64,6 @@ export function DashboardSidebar() {
             );
           })}
         </nav>
-
-        <Card className="mt-6 gap-3 rounded-[24px] border-slate-200 bg-slate-50 py-5 shadow-none">
-          <CardHeader className="px-5">
-            <CardTitle className="text-base text-slate-950">
-              Quick actions
-            </CardTitle>
-            <CardDescription className="text-slate-600">
-              Everything you need to keep your resources fresh.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="px-5">
-            <div className="space-y-2">
-              {quickActions.map((action) => (
-                <div
-                  className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
-                  key={action}
-                >
-                  {action}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </aside>
   );

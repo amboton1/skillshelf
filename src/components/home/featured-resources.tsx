@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -8,10 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import type { Resource } from "@/db/schema";
 import type { ResourceWithCategory } from "@/lib/data/resources";
-import { useRouter } from "next/navigation";
 
 export type { Resource };
 

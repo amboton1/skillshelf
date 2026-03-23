@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,8 +59,6 @@ export function MyResourcesGrid({ userResources }: MyResourcesGridProps) {
           return 0;
       }
     });
-
-  console.log(filtered);
 
   return (
     <div className="space-y-6">
@@ -164,8 +163,15 @@ export function MyResourcesGrid({ userResources }: MyResourcesGridProps) {
                     `$${resource.price}`
                   )}
                 </span>
-                <Button size="sm" variant="outline" className="rounded-xl">
-                  Manage
+                <Button
+                  asChild
+                  className="rounded-xl"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Link href={`/dashboard/my-resources/${resource.id}`}>
+                    View
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>

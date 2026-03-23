@@ -36,7 +36,11 @@ type SortOption =
   | "price-desc"
   | "newest";
 
-export function LibraryGrid({ resources, bookmarkedIds, likedIds }: LibraryGridProps) {
+export function LibraryGrid({
+  resources,
+  bookmarkedIds,
+  likedIds,
+}: LibraryGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("newest");
   const [saved, setSaved] = useState<Set<string>>(new Set(bookmarkedIds));
