@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-[calc(100vh-56px)] bg-[#f4f4f5] py-14 md:py-20">
-      <HeroSection />
+      <HeroSection resources={resources} />
       <FeaturedResources resources={resources} />
       <BrowseCategories categories={categories} />
       <HowItWorks />

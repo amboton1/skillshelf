@@ -1,4 +1,4 @@
-import { count, desc, eq, inArray } from "drizzle-orm";
+import { and, count, desc, eq, inArray } from "drizzle-orm";
 import db from "@/db";
 import {
   bookmarks,
@@ -213,6 +213,33 @@ export async function getAnalyticsData() {
       published: publishedCount,
       draft: userResources.length - publishedCount,
     },
+  };
+}
+
+export async function getResourceBySlug(slug: string) {
+  const [result] = await db
+    .select({ resource: resources, category: categories })
+    .from(resources)
+    .leftJoin(categories, eq(resources.categoryId, categories.id))
+    .where(and(eq(resources.slug, slug), eq(resources.published, true)));
+
+  if (!result) return null;
+
+  const [likesRow] = await db
+    .select({ total: count() })
+    .from(resourceLikes)
+    .where(eq(resourceLikes.resourceId, result.resource.id));
+
+  const files = await db
+    .select()
+    .from(resourceFiles)
+    .where(eq(resourceFiles.resourceId, result.resource.id));
+
+  return {
+    ...result.resource,
+    category: result.category,
+    likes: likesRow?.total ?? 0,
+    fileUrl: files[0]?.fileUrl ?? null,
   };
 }
 

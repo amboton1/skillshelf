@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ResourceWithCategory } from "@/lib/data/resources";
+import Link from "next/link";
 
 interface LibraryGridProps {
   resources: ResourceWithCategory[];
@@ -276,8 +277,13 @@ export function LibraryGrid({
                       fill={saved.has(resource.id) ? "currentColor" : "none"}
                     />
                   </button>
-                  <Button size="sm" variant="outline" className="rounded-xl">
-                    View
+                  <Button
+                    asChild
+                    className="rounded-xl"
+                    size="sm"
+                    variant="outline"
+                  >
+                    <Link href={`/library/${resource.slug}`}>View</Link>
                   </Button>
                 </div>
               </CardFooter>

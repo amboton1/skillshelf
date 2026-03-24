@@ -1,4 +1,5 @@
 import { ArrowLeft, FileText, Heart, ShoppingBag, Tag } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
@@ -75,7 +76,7 @@ export default async function ResourceDetailPage({
             </CardHeader>
             <CardContent className="space-y-6 px-6 md:px-7">
               {resource.thumbnail && (
-                <img
+                <Image
                   alt={resource.title}
                   className="h-48 w-full rounded-2xl object-cover"
                   src={resource.thumbnail}

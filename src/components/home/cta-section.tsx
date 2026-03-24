@@ -1,4 +1,5 @@
 import { Blocks } from "lucide-react";
+import Link from "next/link";
 
 interface CtaSectionProps {
   onListResource?: () => void;
@@ -27,7 +28,7 @@ export function CtaSection({ onListResource }: CtaSectionProps) {
             onClick={onListResource}
             className="mt-10 bg-[#1f2937] px-10 py-4 text-lg font-semibold text-white transition hover:bg-[#111827]"
           >
-            List a Resource
+            <Link href="/dashboard/my-resources">List a Resource</Link>
           </button>
         </div>
       </div>
