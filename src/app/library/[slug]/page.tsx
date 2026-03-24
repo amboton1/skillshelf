@@ -3,12 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getResourceBySlug } from "@/lib/data/resources";
 import { ResourceActionButton } from "./resource-action-button";
 
@@ -101,7 +96,10 @@ export default async function ResourceDetailsPage({
               </span>
             </div>
 
-            <ResourceActionButton price={resource.price} fileUrl={resource.fileUrl} />
+            <ResourceActionButton
+              price={resource.price}
+              fileUrl={resource.fileUrl}
+            />
           </CardContent>
         </Card>
       </div>

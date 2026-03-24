@@ -33,8 +33,8 @@ export function HeroSection({ resources }: HeroSectionProps) {
     r.title.toLowerCase().includes(inputValue.toLowerCase()),
   );
 
-  function handleValueChange(newValue: string) {
-    setValue(newValue);
+  function handleValueChange(newValue: string | null) {
+    setValue(newValue ?? "");
     if (!newValue) return;
     const resource = publishedResources.find((r) => r.title === newValue);
     if (resource) {
