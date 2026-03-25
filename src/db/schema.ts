@@ -97,6 +97,18 @@ export const bookmarks = pgTable("bookmarks", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const comments = pgTable("comments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  description: text("description").notNull(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  resourceId: uuid("resource_id")
+    .notNull()
+    .references(() => resources.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const emailLogs = pgTable("email_logs", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id),
@@ -132,6 +144,9 @@ export type NewResourceLike = typeof resourceLikes.$inferInsert;
 export type Bookmark = typeof bookmarks.$inferSelect;
 export type NewBookmark = typeof bookmarks.$inferInsert;
 
+export type Comment = typeof comments.$inferSelect;
+export type NewComment = typeof comments.$inferInsert;
+
 export type EmailLog = typeof emailLogs.$inferSelect;
 export type NewEmailLog = typeof emailLogs.$inferInsert;
 
@@ -144,6 +159,7 @@ const schema = {
   reviews,
   resourceLikes,
   bookmarks,
+  comments,
   emailLogs,
 };
 export default schema;

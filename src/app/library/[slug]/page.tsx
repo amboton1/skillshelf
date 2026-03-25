@@ -2,9 +2,11 @@ import { ArrowLeft, Heart, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ResourceComments } from "@/components/library/resource-comments";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getResourceBySlug } from "@/lib/data/resources";
+import { getComments, getResourceBySlug } from "@/lib/data/resources";
+import { stackServerApp } from "@/stack/server";
 import { ResourceActionButton } from "./resource-action-button";
 
 interface ResourceDetailsPageProps {
@@ -15,9 +17,14 @@ export default async function ResourceDetailsPage({
   params,
 }: ResourceDetailsPageProps) {
   const { slug } = await params;
-  const resource = await getResourceBySlug(slug);
+  const [resource, user] = await Promise.all([
+    getResourceBySlug(slug),
+    stackServerApp.getUser(),
+  ]);
 
   if (!resource) notFound();
+
+  const resourceComments = await getComments(resource.id);
 
   const formattedDate = new Date(resource.createdAt).toLocaleDateString(
     "en-US",
@@ -99,6 +106,14 @@ export default async function ResourceDetailsPage({
             <ResourceActionButton
               price={resource.price}
               fileUrl={resource.fileUrl}
+            />
+
+            <hr className="border-slate-100" />
+
+            <ResourceComments
+              resourceId={resource.id}
+              initialComments={resourceComments}
+              isLoggedIn={!!user}
             />
           </CardContent>
         </Card>

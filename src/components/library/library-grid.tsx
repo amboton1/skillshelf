@@ -234,6 +234,9 @@ export function LibraryGrid({
                 <CardDescription className="mt-1 text-slate-500">
                   {resource.category?.name ?? "Uncategorized"}
                 </CardDescription>
+                <p className="text-xs text-slate-400">
+                  by {resource.creatorName ?? "Unknown"}
+                </p>
               </CardHeader>
 
               <CardContent className="flex-1 px-5 pb-2">

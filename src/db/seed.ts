@@ -2,6 +2,7 @@ import { seed } from "drizzle-seed";
 import db, { sql } from "@/db";
 import {
   categories,
+  comments,
   emailLogs,
   purchases,
   resourceFiles,
@@ -17,6 +18,7 @@ const RESOURCE_COUNT = 24;
 const PURCHASE_COUNT = 18;
 const REVIEW_COUNT = 16;
 const LIKE_COUNT = 20;
+const COMMENT_COUNT = 30;
 const EMAIL_LOG_COUNT = 10;
 
 const categoryData = [
@@ -33,7 +35,7 @@ async function main() {
     console.log(`🌱 Starting database seed with seed ${SEED}...`);
 
     console.log("🧹 Truncating tables...");
-    await sql`TRUNCATE TABLE email_logs, resource_likes, reviews, purchases, resource_files, resources, categories, users RESTART IDENTITY CASCADE;`;
+    await sql`TRUNCATE TABLE email_logs, comments, resource_likes, reviews, purchases, resource_files, resources, categories, users RESTART IDENTITY CASCADE;`;
 
     console.log("👤 Seeding users...");
     await seed(db, { users }, { seed: SEED }).refine((funcs) => ({
@@ -204,6 +206,35 @@ async function main() {
           userId: funcs.valuesFromArray({ values: userIds, isUnique: false }),
           resourceId: funcs.valuesFromArray({
             values: resourceIds,
+            isUnique: false,
+          }),
+        },
+      },
+    }));
+
+    console.log("💬 Seeding comments...");
+    await seed(db, { comments }, { seed: SEED + 7 }).refine((funcs) => ({
+      comments: {
+        count: COMMENT_COUNT,
+        columns: {
+          userId: funcs.valuesFromArray({ values: userIds, isUnique: false }),
+          resourceId: funcs.valuesFromArray({
+            values: resourceIds,
+            isUnique: false,
+          }),
+          description: funcs.valuesFromArray({
+            values: [
+              "This is exactly what I was looking for. Saved me hours of work!",
+              "Really clean and well-organized. Would definitely recommend.",
+              "Great resource, used it for a client project and they loved it.",
+              "The structure is solid. Easy to customize to fit my brand.",
+              "Honestly one of the better resources I've picked up. Well worth it.",
+              "Does what it says on the tin. No fluff, just useful stuff.",
+              "I've used a lot of similar products — this one stands out.",
+              "Super easy to get started with. The documentation is clear.",
+              "Picked this up for a side project and it made a huge difference.",
+              "Clean design and thoughtful details. Shipping this to a client next week.",
+            ],
             isUnique: false,
           }),
         },

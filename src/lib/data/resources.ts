@@ -3,6 +3,7 @@ import db from "@/db";
 import {
   bookmarks,
   categories,
+  comments,
   purchases,
   resourceFiles,
   resourceLikes,
@@ -13,6 +14,7 @@ import { stackServerApp } from "@/stack/server";
 
 export type ResourceWithCategory = typeof resources.$inferSelect & {
   category: typeof categories.$inferSelect | null;
+  creatorName: string | null;
 };
 
 async function getDbUser() {
@@ -31,13 +33,16 @@ export async function getResources(): Promise<ResourceWithCategory[]> {
     .select({
       resource: resources,
       category: categories,
+      creatorName: users.name,
     })
     .from(resources)
-    .leftJoin(categories, eq(resources.categoryId, categories.id));
+    .leftJoin(categories, eq(resources.categoryId, categories.id))
+    .leftJoin(users, eq(resources.creatorId, users.id));
 
-  return result.map(({ resource, category }) => ({
+  return result.map(({ resource, category, creatorName }) => ({
     ...resource,
     category,
+    creatorName,
   }));
 }
 
@@ -49,14 +54,17 @@ export async function getUsersResources(): Promise<ResourceWithCategory[]> {
     .select({
       resource: resources,
       category: categories,
+      creatorName: users.name,
     })
     .from(resources)
     .leftJoin(categories, eq(resources.categoryId, categories.id))
+    .leftJoin(users, eq(resources.creatorId, users.id))
     .where(eq(resources.creatorId, dbUser.id));
 
-  return result.map(({ resource, category }) => ({
+  return result.map(({ resource, category, creatorName }) => ({
     ...resource,
     category,
+    creatorName,
   }));
 }
 
@@ -288,6 +296,25 @@ export async function getUserResourceByID(id: string) {
   };
 }
 
+export async function getComments(resourceId: string) {
+  const result = await db
+    .select({
+      comment: comments,
+      userName: users.name,
+      userImage: users.image,
+    })
+    .from(comments)
+    .leftJoin(users, eq(comments.userId, users.id))
+    .where(eq(comments.resourceId, resourceId))
+    .orderBy(desc(comments.createdAt));
+
+  return result.map(({ comment, userName, userImage }) => ({
+    ...comment,
+    userName,
+    userImage,
+  }));
+}
+
 export async function getBookmarkedResourceIds(): Promise<string[]> {
   const dbUser = await getDbUser();
   if (!dbUser) return [];
@@ -325,10 +352,19 @@ export async function getSavedResources(): Promise<ResourceWithCategory[]> {
   if (resourceIds.length === 0) return [];
 
   const result = await db
-    .select({ resource: resources, category: categories })
+    .select({
+      resource: resources,
+      category: categories,
+      creatorName: users.name,
+    })
     .from(resources)
     .leftJoin(categories, eq(resources.categoryId, categories.id))
+    .leftJoin(users, eq(resources.creatorId, users.id))
     .where(inArray(resources.id, resourceIds));
 
-  return result.map(({ resource, category }) => ({ ...resource, category }));
+  return result.map(({ resource, category, creatorName }) => ({
+    ...resource,
+    category,
+    creatorName,
+  }));
 }
