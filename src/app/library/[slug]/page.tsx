@@ -5,18 +5,25 @@ import { notFound } from "next/navigation";
 import { ResourceComments } from "@/components/library/resource-comments";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getComments, getResourceBySlug } from "@/lib/data/resources";
+import {
+  getComments,
+  getResourceBySlug,
+  getUserPurchase,
+} from "@/lib/data/resources";
 import { stackServerApp } from "@/stack/server";
 import { ResourceActionButton } from "./resource-action-button";
 
 interface ResourceDetailsPageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ success?: string }>;
 }
 
 export default async function ResourceDetailsPage({
   params,
+  searchParams,
 }: ResourceDetailsPageProps) {
   const { slug } = await params;
+  const { success } = await searchParams;
   const [resource, user] = await Promise.all([
     getResourceBySlug(slug),
     stackServerApp.getUser(),
@@ -24,7 +31,10 @@ export default async function ResourceDetailsPage({
 
   if (!resource) notFound();
 
-  const resourceComments = await getComments(resource.id);
+  const [resourceComments, hasPurchased] = await Promise.all([
+    getComments(resource.id),
+    getUserPurchase(resource.id),
+  ]);
 
   const formattedDate = new Date(resource.createdAt).toLocaleDateString(
     "en-US",
@@ -105,7 +115,15 @@ export default async function ResourceDetailsPage({
 
             <ResourceActionButton
               price={resource.price}
-              fileUrl={resource.fileUrl}
+              fileUrl={
+                hasPurchased || resource.price === "0.00"
+                  ? resource.fileUrl
+                  : null
+              }
+              hasPurchased={hasPurchased}
+              resourceId={resource.id}
+              slug={slug}
+              showSuccess={success === "true"}
             />
 
             <hr className="border-slate-100" />

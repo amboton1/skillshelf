@@ -315,6 +315,20 @@ export async function getComments(resourceId: string) {
   }));
 }
 
+export async function getUserPurchase(resourceId: string): Promise<boolean> {
+  const dbUser = await getDbUser();
+  if (!dbUser) return false;
+
+  const existing = await db.query.purchases.findFirst({
+    where: and(
+      eq(purchases.userId, dbUser.id),
+      eq(purchases.resourceId, resourceId),
+    ),
+  });
+
+  return !!existing;
+}
+
 export async function getBookmarkedResourceIds(): Promise<string[]> {
   const dbUser = await getDbUser();
   if (!dbUser) return [];
