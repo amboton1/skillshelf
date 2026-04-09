@@ -77,3 +77,5 @@ src/
 ## Deploy
 
 Deploy instantly on [Vercel](https://vercel.com). Set the environment variables in your project settings and connect your Neon database.
+
+<a href="https://www.buymeacoffee.com/botarius" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
